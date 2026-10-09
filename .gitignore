@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+dist/
+
+# Secrets
+.env
+
+# Audio and caches: recreate with scripts/prepare_data.py and scripts/evaluate.py
+data/_download/
+data/*/clips/
+data/*/cache/

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpectroMood</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>SpectroMood</h1>
+      <p class="sub">Speech emotion with a decision model · spectrogram + voice features → Cloudflare Clef</p>
+    </div>
+    <div id="status" class="status" role="status">Checking backend…</div>
+  </header>
+
+  <main>
+    <section class="controls card" aria-label="Controls">
+      <button id="micBtn" class="primary" disabled>🎙️ Start microphone</button>
+      <label class="file-btn">
+        <input id="fileInput" type="file" accept="audio/*" disabled>
+        <span>📁 Analyse a file</span>
+      </label>
+      <div class="field">
+        <label for="windowSel">Window</label>
+        <select id="windowSel">
+          <option value="3">3 s</option>
+          <option value="4" selected>4 s</option>
+          <option value="5">5 s</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="hopSel">Send every</label>
+        <select id="hopSel">
+          <option value="2">2 s</option>
+          <option value="3" selected>3 s</option>
+          <option value="5">5 s</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="variantSel">Input to Clef</label>
+        <select id="variantSel"></select>
+      </div>
+      <div class="calibration">
+        <button id="calibrateBtn" class="secondary" disabled>🧘 Calibrate my voice</button>
+        <span id="baselineStatus" class="meta">Not calibrated</span>
+        <button id="clearBaseline" class="link" hidden>Clear</button>
+      </div>
+      <p id="variantHint" class="hint warn" role="status"></p>
+      <p class="hint">Each result trails live speech by the window length plus ~1–2 s of processing; the card shows when its audio was captured.</p>
+    </section>
+
+    <section class="live card" aria-label="Live microphone">
+      <div class="card-head">
+        <h2>Live input</h2>
+        <span id="level" class="mono">— dBFS</span>
+      </div>
+      <canvas id="liveSpec" height="160" aria-label="Live spectrogram"></canvas>
+      <div class="meter"><div id="meterFill"></div></div>
+    </section>
+
+    <section class="current card" aria-label="Latest result">
+      <div class="card-head">
+        <h2>Latest result</h2>
+        <span class="head-meta"><span id="voiceState" class="voice-state idle">🔇 waiting for voice</span> · <span id="pending" class="mono">0 in flight</span></span>
+      </div>
+      <div class="emotion-hero">
+        <div id="currentEmoji" class="emoji-big" aria-hidden="true">🎧</div>
+        <div id="currentEmotion" class="emotion-big">—</div>
+      </div>
+      <div id="currentMeta" class="meta">Start the microphone or analyse a file.</div>
+      <div id="bars" class="bars"></div>
+      <div class="arousal">
+        <span title="How activated the voice sounds">Arousal 😌→😤</span>
+        <div class="arousal-track"><div id="arousalFill"></div></div>
+        <span id="arousalLabel" class="mono">—</span>
+      </div>
+    </section>
+
+    <section class="timeline card" aria-label="Timeline">
+      <div class="card-head">
+        <h2>Timeline</h2>
+        <div id="legend" class="legend"></div>
+      </div>
+      <canvas id="timeline" height="200" aria-label="Emotion probabilities over time"></canvas>
+    </section>
+
+    <section class="sent card" aria-label="Image sent to Clef">
+      <div class="card-head">
+        <h2>Image sent to Clef</h2>
+        <span id="prosody" class="mono small"></span>
+      </div>
+      <img id="sentImage" alt="Most recent spectrogram image sent to Clef" hidden>
+      <p id="noImage" class="meta">No image yet.</p>
+    </section>
+
+    <section class="log card" aria-label="Event log">
+      <h2>Log</h2>
+      <ol id="log" class="mono small"></ol>
+    </section>
+  </main>
+
+  <script src="/static/app.js" type="module"></script>
+</body>
+</html>

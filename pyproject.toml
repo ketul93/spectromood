@@ -1,0 +1,49 @@
+[project]
+name = "spectromood"
+version = "0.1.0"
+description = "Speech emotion detection with a decision model: spectrograms, voice features and Cloudflare Clef"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+keywords = ["speech-emotion-recognition", "emotion-detection", "cloudflare", "workers-ai", "clef", "prosody", "spectrogram"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+authors = [
+    { name = "ketul93", email = "ketulshah1993@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.143.0",
+    "httpx>=0.28.1",
+    "librosa>=1.0.0",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.3",
+    "onnxruntime>=1.31.0",
+    "python-dotenv>=1.2.4",
+    "scipy>=1.18.1",
+    "soundfile>=0.14.0",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ketul93/spectromood"
+Issues = "https://github.com/ketul93/spectromood/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.10",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120

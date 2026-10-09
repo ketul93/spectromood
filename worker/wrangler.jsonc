@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "spectromood-clef-proxy",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  // Set account_id here (or CLOUDFLARE_ACCOUNT_ID env) to choose which account is billed.
+  "ai": { "binding": "AI" },
+  "observability": { "enabled": true }
+}

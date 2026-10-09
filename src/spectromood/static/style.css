@@ -1,0 +1,200 @@
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --text: #1b1f24;
+  --muted: #5b6470;
+  --border: #e1e4e8;
+  --accent: #2f6fde;
+  --accent-text: #ffffff;
+  --track: #eceff3;
+  --danger: #c0362c;
+  --angry: #d64541;
+  --fearful: #8e5bd6;
+  --happy: #e0a100;
+  --sad: #3a7bd5;
+  --neutral: #7d8793;
+  --radius: 10px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1216;
+    --surface: #171b21;
+    --text: #e6e9ed;
+    --muted: #98a2ae;
+    --border: #2a3039;
+    --accent: #5b8ff0;
+    --track: #232932;
+    --danger: #ef6b62;
+    --angry: #ef6b62;
+    --fearful: #ab82ec;
+    --happy: #f2bf3a;
+    --sad: #5f97ea;
+    --neutral: #9aa4b0;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 { font-size: 1.25rem; margin: 0; }
+h2 { font-size: 0.95rem; margin: 0; font-weight: 600; }
+.sub { margin: 2px 0 0; color: var(--muted); font-size: 0.85rem; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.small { font-size: 0.78rem; }
+.meta { color: var(--muted); font-size: 0.85rem; }
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.status {
+  font-size: 0.82rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--track);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.status.ok { color: var(--text); }
+.status.err { color: var(--danger); }
+
+main {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  padding: 16px 24px 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  min-width: 0;
+}
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.controls { grid-column: span 12; display: flex; flex-wrap: wrap; align-items: end; gap: 12px 20px; }
+.live { grid-column: span 7; }
+.current { grid-column: span 5; }
+.timeline { grid-column: span 12; }
+.sent { grid-column: span 7; }
+.log { grid-column: span 5; }
+
+button.primary, .file-btn span {
+  display: inline-block;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 9px 16px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+button.primary { background: var(--accent); color: var(--accent-text); }
+button.primary.recording { background: var(--danger); border-color: var(--danger); }
+button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.file-btn span { color: var(--accent); background: transparent; }
+button.secondary {
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 9px 16px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  cursor: pointer;
+}
+button.secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+button.link { border: 0; background: none; color: var(--accent); font: inherit; cursor: pointer; padding: 0; }
+.calibration { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.hint.warn { color: var(--danger); }
+.hint.warn:empty { display: none; }
+.file-btn input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.file-btn input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.file-btn input:disabled + span { opacity: 0.5; cursor: not-allowed; }
+
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; color: var(--muted); }
+select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.hint { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 0.8rem; }
+
+canvas { width: 100%; display: block; border-radius: 6px; background: var(--track); }
+/* Fixed CSS heights: the drawing buffer is sized from these, so without them a high-DPI
+   screen makes the canvas grow on every redraw. */
+#liveSpec { height: 160px; }
+#timeline { height: 220px; }
+
+.meter { height: 6px; margin-top: 10px; background: var(--track); border-radius: 3px; overflow: hidden; }
+#meterFill { height: 100%; width: 0; background: var(--accent); transition: width 80ms linear; }
+
+.emotion-hero { display: flex; align-items: center; gap: 14px; }
+.emoji-big { font-size: 3.4rem; line-height: 1; }
+.emoji-big.pop { animation: pop 320ms ease-out; }
+@keyframes pop { 0% { transform: scale(0.6); } 70% { transform: scale(1.15); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .emoji-big.pop { animation: none; } }
+.emotion-big { font-size: 2.2rem; font-weight: 700; text-transform: capitalize; line-height: 1.1; }
+.bars { display: grid; gap: 8px; margin: 16px 0; }
+.bar { display: grid; grid-template-columns: 96px 1fr 44px; align-items: center; gap: 8px; font-size: 0.85rem; }
+.bar-track { height: 10px; background: var(--track); border-radius: 5px; overflow: hidden; }
+.bar-fill { height: 100%; width: 0; border-radius: 5px; transition: width 250ms ease; }
+.bar-val { text-align: right; font-variant-numeric: tabular-nums; }
+
+.arousal { display: grid; grid-template-columns: 96px 1fr auto; gap: 8px; align-items: center; font-size: 0.85rem; }
+.arousal-track { height: 10px; background: var(--track); border-radius: 5px; overflow: hidden; }
+#arousalFill { height: 100%; width: 0; background: var(--muted); transition: width 250ms ease; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.8rem; color: var(--muted); }
+.legend span::before {
+  content: "";
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  margin-right: 5px;
+  background: var(--c);
+  vertical-align: -1px;
+}
+
+#sentImage { width: 100%; border-radius: 6px; border: 1px solid var(--border); }
+
+#log { margin: 8px 0 0; padding-left: 2.6em; max-height: 320px; overflow-y: auto; color: var(--muted); }
+#log li { margin-bottom: 2px; overflow-wrap: anywhere; }
+#log li.err { color: var(--danger); }
+
+@media (max-width: 860px) {
+  main { padding: 12px 16px 24px; }
+  .topbar { padding: 12px 16px; flex-wrap: wrap; }
+  .live, .current, .timeline, .sent, .log { grid-column: span 12; }
+}
+
+.head-meta { font-size: 0.8rem; color: var(--muted); }
+.voice-state { font-weight: 600; color: var(--text); }
+.voice-state.idle { color: var(--muted); font-weight: 400; }

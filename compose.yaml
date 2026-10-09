@@ -1,0 +1,29 @@
+name: spectromood
+
+services:
+  dashboard:
+    build:
+      context: .
+      target: app
+    image: spectromood:latest
+    env_file: .env
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  # Data preparation, evaluation and tests, e.g.
+  #   docker compose run --rm tools python scripts/prepare_data.py --lang en
+  #   docker compose run --rm tools python scripts/evaluate.py --lang en
+  #   docker compose run --rm tools pytest
+  tools:
+    build:
+      context: .
+      target: tools
+    image: spectromood-tools:latest
+    profiles: ["tools"]
+    env_file: .env
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      HOME: /tmp
+    volumes:
+      - .:/app
